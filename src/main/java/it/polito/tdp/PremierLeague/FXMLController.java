@@ -7,7 +7,9 @@ package it.polito.tdp.PremierLeague;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.PremierLeague.model.Avversario;
 import it.polito.tdp.PremierLeague.model.Model;
+import it.polito.tdp.PremierLeague.model.TopPlayer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -45,6 +47,18 @@ public class FXMLController {
     @FXML
     void doCreaGrafo(ActionEvent event) {
 
+    	txtResult.clear();
+    	double goal=0;
+    	try {
+    		goal=Double.parseDouble(txtGoals.getText());
+    	}catch(NumberFormatException e) {
+    		txtResult.appendText("Devi inserire un numero con la virgola!\n");
+    		return;
+    	}
+    	this.model.creaGrafo(goal);
+    	txtResult.appendText("Grafo creato!\n");
+    	txtResult.appendText("# VERTICI: " + this.model.vertexNumber()+"\n");
+    	txtResult.appendText("# ARCHI: " + this.model.edgeNumber());
     }
 
     @FXML
@@ -55,6 +69,17 @@ public class FXMLController {
     @FXML
     void doTopPlayer(ActionEvent event) {
 
+    	txtResult.clear();
+    	TopPlayer topPlayer=this.model.getTopPlayer();
+    	if(topPlayer==null) {
+    		txtResult.appendText("Crea il grafo!\n");
+    		return;
+    	}
+    	txtResult.appendText("TOP PLAYER: "+topPlayer.toString());
+    	txtResult.appendText("\n\nAVVERSARI BATTUTI:\n");
+    	for(Avversario a:this.model.getTopPlayer().getAvversari()) {
+    		txtResult.appendText(a.toString()+"\n");
+    	}
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
